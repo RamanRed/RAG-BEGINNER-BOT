@@ -20,11 +20,13 @@ if change == "yes":
         try:
             shutil.rmtree(CHROMA_PATH)
             print("✅ ChromaDB storage deleted. Rebuilding the database...")
+            
+            # Initialize ChromaDB
+            chromadb_instance = chromadb.PersistentClient(path=CHROMA_PATH)
+        
         except Exception as e:
             print(f"⚠️ Error deleting ChromaDB storage: {e}")
 
-# Initialize ChromaDB
-chromadb_instance = chromadb.PersistentClient(path=CHROMA_PATH)
 collection = chromadb_instance.get_or_create_collection(name="myEmbeddings")
 
 print("✅ ChromaDB initialized successfully.")
