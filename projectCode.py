@@ -11,13 +11,23 @@ DataPath = "data/books"
 CHROMA_PATH = "./chromadb"
 # Load embedding model
 model = SentenceTransformer("all-MiniLM-L6-v2")
-# Remove existing ChromaDB storage
-if os.path.exists(CHROMA_PATH):
-    shutil.rmtree(CHROMA_PATH)
+# Ask user whether data has changed
+change = input("Has the dataset changed? (Yes/No): ").strip().lower()
+
+# Delete ChromaDB storage only if necessary
+if change == "yes":
+    if os.path.exists(CHROMA_PATH):
+        try:
+            shutil.rmtree(CHROMA_PATH)
+            print("✅ ChromaDB storage deleted. Rebuilding the database...")
+        except Exception as e:
+            print(f"⚠️ Error deleting ChromaDB storage: {e}")
 
 # Initialize ChromaDB
 chromadb_instance = chromadb.PersistentClient(path=CHROMA_PATH)
 collection = chromadb_instance.get_or_create_collection(name="myEmbeddings")
+
+print("✅ ChromaDB initialized successfully.")
 
 # 🔹 Step 1: Load Documents
 def LoadDocument():
