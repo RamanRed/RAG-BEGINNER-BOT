@@ -1,10 +1,16 @@
 import os
 import shutil
 import chromadb
+import google.generativeai as  genai
 from langchain_community.document_loaders import DirectoryLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.docstore.document import Document
 from sentence_transformers import SentenceTransformer
+from dotenv import load_dotenv
+
+load_dotenv()
+YOUR_API_KEY=os.getenv("GEMINI_API_KEY")
+# genai.configure(api_key=YOUR_API_KEY)
 
 # Define the data path
 DataPath = "data/books"
@@ -83,8 +89,20 @@ def QuerySerach(query, topk):
     for i, (text, score) in enumerate(zip(retrieved_texts, retrieved_scores)):
         print(f"\n🔹 Result {i+1} (Score: {score:.4f}):\n{text}")
 
-    return retrieved_texts
-# 🔹 Step 5 Run the Process
+    GenerateAnswer(query, retrieved_texts)
+# 🔹 Step 5 addition of LLM model
+def GenerateAnswer(Query, Answer):
+    context= "\n\n".join(Answer)
+    Content= f"Use the following information to answer the question:\n{context}\n\nQuestion: {Query}"
+    context= "\n\n".join(Answer)
+    genai.configure(api_key=YOUR_API_KEY)
+    model=genai.GenerativeModel("gemini-2.0-flash")
+    response=model.generate_content(Content)
+    print("anwser")
+    print(response.text)
+
+
+# 🔹 Step 6 Run the Process
 documents = LoadDocument()
 chunks = DataSplitter(documents)
 SaveToChroma(chunks)

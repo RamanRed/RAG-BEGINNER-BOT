@@ -1,0 +1,38 @@
+# Ignore ChromaDB storage
+chromadb/
+
+# Ignore virtual environments
+venv/
+.env/
+.venv/
+
+# Ignore Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Ignore environment files
+*.env
+.envrc
+
+# Ignore logs and temp files
+*.log
+*.tmp
+.DS_Store
+
+# Ignore VS Code settings
+.vscode/
+*.code-workspace
+
+# Ignore dependencies (if using pip)
+pip-wheel-metadata/
+pip-log.txt
+
+# Ignore TensorFlow & ML model artifacts
+*.h5
+*.ckpt
+saved_model/
